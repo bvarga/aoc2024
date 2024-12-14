@@ -1,0 +1,19 @@
+{
+  "name": "aoc2024",
+  "version": "1.0.0",
+  "description": "Advent of code 2024",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "ava"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "ava": "^6.2.0"
+  }
+}
