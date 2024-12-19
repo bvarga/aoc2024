@@ -1,0 +1,53 @@
+2,4 regB = lowest 3 bit of regA (0,1,2,3,4,5,6,7)
+1,5 regB = regB XOR 5 (101)
+7,5 regC = regA / 2^regB
+1,6 regB = regB XOR 6 (110)
+0,3 regA = regA / 2^3  
+4,1 regB = regB XOR regC
+5,5 output regB
+3, 0 if regA > 0 GOTO 0
+
+(XOR 5) (shift n) XOR 6 (110) regB XOR regC
+0 000 101 (5) regC = regA / 2^5 011 (3)  
+1 001 100 (4) 010 (2)
+2 010 111 (7) 001 (1)
+3 011 110 (6) 000 (0)
+4 100 001 (1) 111 (7)
+5 101 000 (0) 110 (6)
+6 110 011 (3) 101 (5)
+7 111 010 (2) 100 (4)
+
+001 001
+101 011 101 110 011
+
+regB = 3
+regB = 6
+regC = 101 011 101
+
+111 110
+
+117440
+
+regB = XXX XOR 101
+regC =
+
+70
+
+010 8^
+
+3551430615751420
+130398532653840
+
+= ((lowest 3 bit of regA) XOR 5) XOR (regA / 2^regB)
+
+RegA = ( ( (lowest 3 bit of regA) XOR 5 ) XOR 6 )/ 8
+
+     A  B  C
+
+2,4 1 1 0
+1,5 1 4 0
+7,5 1 4 0
+1,6 4 4 0
+0,3 0 4 0
+4,1 0 4 0
+5,5 0 4 0
