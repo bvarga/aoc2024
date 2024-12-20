@@ -34,50 +34,73 @@ while (
   }
 }
 
-const part1 = [];
+// 285??
+const radius = 20;
+const atLeast = 100;
+let part2 = 0;
 
 path.forEach(([x, y], indx) => {
-  const deltas = [
-    [1, 0],
-    [-1, 0],
-    [0, 1],
-    [0, -1],
-  ];
+  console.log(`Checking (${x}, ${y}) ${indx}/${path.length}`);
 
-  const cheats = deltas
-    .map(([dx, dy]) => {
-      const pix1 = map.data(x + dx, y + dy);
-      const pix2 = map.data(x + 2 * dx, y + 2 * dy);
-      return pix1 === "#" &&
-        !!pix2 &&
-        pix2 !== "#" &&
-        path.findIndex(([px, py]) => px === x + 2 * dx && py === y + 2 * dy) >
-          indx
-        ? [dx, dy]
-        : null;
-    })
-    .filter(Boolean);
+  /** @type {[number, number]} */
+  const cheatFrom = [x, y];
+  const ends = neighbours(cheatFrom, radius, map).filter(
+    ([ex, ey]) => ex !== x || ey !== y
+  );
 
-  cheats.forEach(([dx, dy]) => {
-    const toIndx = path.findIndex(
-      ([px, py]) => px === x + 2 * dx && py === y + 2 * dy
-    );
-
-    part1.push({
-      save: toIndx - indx - 2,
-      from: [x + dx, y + dy],
-      to: [x + 2 * dx, y + 2 * dy],
-    });
+  // map.print((it, px, py) => {
+  //   if (ends.find(([ex, ey]) => ex === px && ey === py)) {
+  //     return "O";
+  //   } else if (x === px && y === py) {
+  //     return "X";
+  //   } else return it;
+  // });
+  ends.forEach(([ex, ey]) => {
+    const pix2Index = path.findIndex(([px, py]) => px === ex && py === ey);
+    const save = pix2Index - indx - dist([x, y], [ex, ey]);
+    if (save >= atLeast) {
+      // console.log(
+      //   `from (${x},${y}) to (${ex},${ey}) can save ${pix2Index - indx}`
+      // );
+      part2++;
+    }
   });
 });
 
-const res1 = part1.reduce((acc, { save }) => {
-  acc[save] = (acc[save] || 0) + 1;
-  return acc;
-}, {});
+console.log(`Part 2: ${part2}`);
 
-const moreThan100 = Object.entries(res1).reduce(
-  (acc, [save, count]) => (Number(save) >= 100 ? acc + count : acc),
-  0
-);
-console.log(`Part 1: ${moreThan100}`);
+/**
+ *
+ * @param {[number, number]} point
+ * @param {number} radius
+ * @param {Map<string>} map
+ * @returns {[number, number][]}
+ */
+function neighbours(point, radius, map) {
+  /** @type {[number, number][]} */
+  const points = [];
+
+  for (let x = point[0] - radius; x <= point[0] + radius; x++) {
+    for (let y = point[1] - radius; y <= point[1] + radius; y++) {
+      const pix = map.data(x, y);
+      if (
+        pix &&
+        pix !== "#" &&
+        !(x === point[0] && y === point[1]) &&
+        dist(point, [x, y]) <= radius
+      ) {
+        points.push([x, y]);
+      }
+    }
+  }
+
+  return points;
+}
+
+function dist(p1, p2) {
+  return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
+}
+
+// 4941573 too high
+// 1876229 too high
+// 3720838 too high
